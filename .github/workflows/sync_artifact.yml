@@ -1,0 +1,28 @@
+name: Sync External Artifact
+on:
+  workflow_dispatch: # تشغيل يدوي من المتصفح أو ترمكس
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Artifact using GH CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # تحميل الملف من الـ Run المحدد
+          gh run download 24261399046 \
+            --repo Jasserbelloumi/hitman-chronicles \
+            --name "hitman-chronicles-release-apk" \
+            --dir ./downloaded_files/
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "Osama"
+          git config --global user.email "osama@github.com"
+          git add .
+          git commit -m "Add latest artifact from external run" || exit 0
+          git push
