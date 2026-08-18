@@ -105,3 +105,14 @@ jobs:
           if (-not $ip) { Write-Error 'Tailscale IP not assigned'; exit 1 }
           echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
           Write-Host "Tailscale IP: $ip"
+      - name: Keep session alive for 6 hours
+        shell: powershell
+        run: |
+          Write-Host "RDP started. Keeping session alive for 6 hours..."
+          $endTime = (Get-Date).AddHours(6)
+          while ((Get-Date) -lt $endTime) {
+            Write-Host "Remaining time: $(($endTime - (Get-Date)).ToString('hh\:mm\:ss'))"
+            Start-Sleep -Seconds 60
+          }
+          Write-Host "6 hours passed. Shutting down."
+
