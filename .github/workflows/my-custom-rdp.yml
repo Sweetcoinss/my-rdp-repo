@@ -103,21 +103,8 @@ jobs:
             Start-Sleep -Seconds 5
           }
           if (-not $ip) { Write-Error 'Tailscale IP not assigned'; exit 1 }
-echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
+          echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
           Write-Host "Tailscale IP: $ip"
-
-      - name: Install Rtl Terminal
-        shell: powershell
-        run: |
-          $url = "https://github.com/mirbehnam/RtlTerminal/releases/download/v1.0.4/RtlTerminal-Setup-1.0.4-x64.exe"
-          $setup = "$env:TEMP\RtlTerminal-Setup.exe"
-          Invoke-WebRequest -Uri $url -OutFile $setup -UseBasicParsing
-          Start-Process -FilePath $setup -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/SP-" -Wait
-          Remove-Item $setup -Force
-          $rtl = "C:\Program Files\behnamapps\Rtl Terminal\RtlTerminal.exe"
-          if (-not (Test-Path $rtl)) { Write-Error "Rtl Terminal install check failed"; exit 1 }
-          Write-Host "Rtl Terminal installed."
-
       - name: Keep session alive for 6 hours
         shell: powershell
         run: |
@@ -128,5 +115,4 @@ echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
             Start-Sleep -Seconds 60
           }
           Write-Host "6 hours passed. Shutting down."
-
 
