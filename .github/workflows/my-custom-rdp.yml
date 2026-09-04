@@ -103,7 +103,7 @@ jobs:
             Start-Sleep -Seconds 5
           }
           if (-not $ip) { Write-Error 'Tailscale IP not assigned'; exit 1 }
-echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
+          echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
           Write-Host "Tailscale IP: $ip"
 
       - name: Install Rtl Terminal
@@ -128,5 +128,3 @@ echo "TAILSCALE_IP=$ip" >> $env:GITHUB_ENV
             Start-Sleep -Seconds 60
           }
           Write-Host "6 hours passed. Shutting down."
-
-
